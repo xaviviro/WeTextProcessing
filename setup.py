@@ -15,8 +15,13 @@ import sys
 
 from setuptools import find_packages, setup
 
-version = sys.argv[-1].split("=")[1]
-sys.argv = sys.argv[0 : len(sys.argv) - 1]
+# Handle version from command line or default
+version = "1.0.5"
+for i, arg in enumerate(sys.argv):
+    if arg.startswith("version="):
+        version = arg.split("=")[1]
+        sys.argv.pop(i)
+        break
 
 with open("README.md", "r", encoding="utf8") as fh:
     long_description = fh.read()
@@ -32,7 +37,16 @@ setup(
     url="https://github.com/wenet-e2e/WeTextProcessing",
     packages=find_packages(),
     package_data={
-        "tn": ["*.fst", "chinese/data/*/*.tsv", "english/data/*/*.tsv", "english/data/*.tsv", "english/data/*/*.far"],
+        "tn": [
+            "*.fst",
+            "chinese/data/*/*.tsv",
+            "english/data/*/*.tsv",
+            "english/data/*.tsv",
+            "english/data/*/*.far",
+            "catalan/data/*/*.tsv",
+            "galician/data/*/*.tsv",
+            "basque/data/*/*.tsv",
+        ],
         "itn": ["*.fst", "chinese/data/*/*.tsv"],
     },
     install_requires=["pynini==2.1.6", "importlib_resources"],
