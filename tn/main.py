@@ -17,8 +17,11 @@ import argparse
 from itn.main import str2bool
 
 # TODO(pzd17 & sxc19): multi-language support
+from tn.basque.normalizer import Normalizer as EuNormalizer
+from tn.catalan.normalizer import Normalizer as CaNormalizer
 from tn.chinese.normalizer import Normalizer as ZhNormalizer
 from tn.english.normalizer import Normalizer as EnNormalizer
+from tn.galician.normalizer import Normalizer as GlNormalizer
 from tn.japanese.normalizer import Normalizer as JaNormalizer
 
 
@@ -34,7 +37,7 @@ def main():
     parser.add_argument("--remove_puncts", type=str, default="False", help='remove punctuations like "。" and "，"')
     parser.add_argument("--full_to_half", type=str, default="True", help='i.e., "Ａ" -> "A"')
     parser.add_argument("--tag_oov", type=str, default="False", help='tag OOV with "OOV"')
-    parser.add_argument("--language", type=str, default="zh", choices=["zh", "en", "ja"], help="valid languages")
+    parser.add_argument("--language", type=str, default="zh", choices=["zh", "en", "ja", "ca", "gl", "eu"], help="valid languages")
     args = parser.parse_args()
 
     if args.language == "zh":
@@ -57,6 +60,21 @@ def main():
             remove_puncts=str2bool(args.remove_puncts),
             full_to_half=str2bool(args.full_to_half),
             tag_oov=str2bool(args.tag_oov),
+        )
+    elif args.language == "ca":
+        normalizer = CaNormalizer(
+            cache_dir=args.cache_dir,
+            overwrite_cache=args.overwrite_cache,
+        )
+    elif args.language == "gl":
+        normalizer = GlNormalizer(
+            cache_dir=args.cache_dir,
+            overwrite_cache=args.overwrite_cache,
+        )
+    elif args.language == "eu":
+        normalizer = EuNormalizer(
+            cache_dir=args.cache_dir,
+            overwrite_cache=args.overwrite_cache,
         )
 
     if args.text:
